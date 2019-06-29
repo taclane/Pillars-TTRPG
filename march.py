@@ -93,7 +93,7 @@ for k in range(0, 5):
 					AGE_PTS += 1
 				
 				elif ROLL == 13:
-					# Advance Death March by 2
+					# Advance Death March
 					# +2 years additional Apparent Aging
 					# Set Aging Points per XP table
 					# Assign a malady
@@ -108,7 +108,7 @@ for k in range(0, 5):
 					AGE_PTS += 2
 				
 				elif ROLL == 20:
-					# Advance Death March by 2
+					# Advance Death March
 					# +2 years additional Apparent Aging
 					# Set Aging Points per XP table
 					# Assign a malady

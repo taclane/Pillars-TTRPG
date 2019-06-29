@@ -34,8 +34,8 @@ for k in range(0, 5):
 	print ("===================================")
 	print (KITH_DESC[k])
 	print ("-----------------------------------")
-	
-	# Set Kith age brackets 
+
+	# Set Kith age brackets
 	ADULT  = KITH[k][0]
 	MIDDLE = KITH[k][1]
 	OLD    = KITH[k][2]
@@ -51,10 +51,10 @@ for k in range(0, 5):
 		MALADY_STATS = []
 		MALADY_SERIOUS_STATS = []
 		MALADY_DEATH = 0
-	
+
 		# Simulate x runs
 		for x in range(0, RUNS):
-			# Reset run 
+			# Reset run
 			DM = 0
 			AGE_PTS = 0
 			AGE_MOD = AGE_TABLE[0]
@@ -63,7 +63,7 @@ for k in range(0, 5):
 			AGE_APPARENT = AGE
 			# Clear maladies
 			MALADIES = [0,0,0,0,0]
-			
+
 			# Run until Death March hits limit
 			while DM < DM_MAX:
 				# Reset Age Point comparator
@@ -74,24 +74,24 @@ for k in range(0, 5):
 				AGE += 1
 				# +1 year Apparent Aging
 				AGE_APPARENT += 1
-				
+
 				# Check Age Modifier
 				if   AGE >= VEN:	AGE_MOD = AGE_TABLE[3]
 				elif AGE >= OLD:	AGE_MOD = AGE_TABLE[2]
 				elif AGE >= MIDDLE:	AGE_MOD = AGE_TABLE[1]
-					
+
 				# Roll the dice
 				# ROLL = 1d12 + Age Modifier + Lifestyle modifier
 				ROLL = random.randint(1,12) + AGE_MOD + LIFE_MOD
-				
+
 				if ROLL <= 3:
 					# No apparent aging
 					AGE_APPARENT -= 1
-				
+
 				elif 10 <= ROLL <= 12:
 					# 1 Aging Point in any Attribute
 					AGE_PTS += 1
-				
+
 				elif ROLL == 13:
 					# Advance Death March
 					# +2 years additional Apparent Aging
@@ -102,11 +102,11 @@ for k in range(0, 5):
 					AGE_APPARENT += 2
 					AGE_PTS = XP_TABLE[DM - 1]
 					MALADY = True
-				
+
 				elif 14 <= ROLL <= 19:
-					# 2 Aging Points in a single Attribute			
+					# 2 Aging Points in a single Attribute
 					AGE_PTS += 2
-				
+
 				elif ROLL == 20:
 					# Advance Death March
 					# +2 years additional Apparent Aging
@@ -117,72 +117,72 @@ for k in range(0, 5):
 					AGE_APPARENT += 2
 					AGE_PTS = XP_TABLE[DM - 1]
 					MALADY = True
-				
+
 				elif 21 <= ROLL <= 22:
 					# 2 Aging Points in a three Attributes (6 total)
 					# +1 year additional Apparent Aging
 					AGE_PTS += 6
 					AGE_APPARENT += 1
-				
+
 				elif ROLL >= 23:
 					# 2 Aging Points in a six Attributes (12 total)
-					# +1 year additional Apparent Aging				
+					# +1 year additional Apparent Aging
 					AGE_PTS += 12
 					AGE_APPARENT += 1
-	
+
 				# Check if Age Points were incremented this year
 				if AGE_PTS > POINTCHECK:
 					# Lookup current Death March in XP Table
 					for index,xp in enumerate(XP_TABLE):
 						if AGE_PTS >= xp: DM = (index+1)
-				
+
 				# Resolve Malady (if not outright killed by 13/20)
 				if DM < DM_MAX and MALADY:
 					# Roll for malady type
 					# MAL_ROLL = 2d10 + Age Modifier + Death March
 					MAL_ROLL = random.randint(1,10) + random.randint(1,10) + AGE_MOD + DM
-					
+
 					if   MAL_ROLL >= 26:
 						#Critical Malady
 						MALADIES[4] += 1
 						SAVING_THROW = 21
-						
+
 					elif MAL_ROLL >= 23:
 						#Serious Malady
-						MALADIES[3] += 1	
+						MALADIES[3] += 1
 						SAVING_THROW = 15
 
-					elif MAL_ROLL >= 20:	
+					elif MAL_ROLL >= 20:
 						#Minor Malady
-						MALADIES[2] += 1	
+						MALADIES[2] += 1
 						SAVING_THROW = 9
-						
+
 					elif MAL_ROLL >= 14:
-						#1 Month Incapacitation	
+						#1 Month Incapacitation
 						MALADIES[1] += 1
 						SAVING_THROW = 0
-						
+
 					else:
-						#1 Week Incapacitation 					
+						#1 Week Incapacitation
 						MALADIES[0] += 1
 						SAVING_THROW = 0
-						
+
 					# Roll for recovery
-					# Recovery Roll = 2d10 + Herbalism + Surgery + Constitution	
+					# Recovery Roll = 2d10 + Herbalism + Surgery + Constitution
 					RECOVERY_ROLL = random.randint(1,10) + random.randint(1,10) + (5) + (5) + (3)
-					if RECOVERY_ROLL < SAVING_THROW: 
+					if RECOVERY_ROLL < SAVING_THROW:
 						DM = 20
 						MALADY_DEATH += 1
-					
+
 				# DEBUG: STEP RUN BY YEAR
 				#print ( AGE, AGE_APPARENT, DM, AGE_PTS, roll, AGE_MOD, LIFE_MOD, MALADIES[4], MALADIES[3], MALADIES[2], MALADIES[1], MALADIES[0])
-			
+
 			# Collect run stats
 			AGE_STATS.append(AGE)
 			ROLL_STATS.append(ROLL)
 			MALADY_STATS.append(sum(MALADIES))
 			MALADY_SERIOUS_STATS.append(MALADIES[4] + MALADIES[3])
-		
+
 		#Print Stats per Lifestyle
 		REAPED = ROLL_STATS.count(13) + ROLL_STATS.count(20)
 		print ( LIFESTYLE_DESC[l] , "| Average age:" , round(statistics.mean(AGE_STATS),1) , "| Stdev:", round(statistics.stdev(AGE_STATS),1) )

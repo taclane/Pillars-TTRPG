@@ -136,7 +136,7 @@ for k in range(0, 5):
 					for index,xp in enumerate(XP_TABLE):
 						if AGE_PTS >= xp: DM = (index+1)
 				
-				# Resolve Malady
+				# Resolve Malady (if not outright killed by 13/20)
 				if DM < DM_MAX and MALADY:
 					# Roll for malady type
 					# MAL_ROLL = 2d10 + Age Modifier + Death March
@@ -167,7 +167,7 @@ for k in range(0, 5):
 						MALADIES[0] += 1
 						SAVING_THROW = 0
 						
-					# Roll for recovery (if not outright killed by 13/20)
+					# Roll for recovery
 					# Recovery Roll = 2d10 + Herbalism + Surgery + Constitution	
 					RECOVERY_ROLL = random.randint(1,10) + random.randint(1,10) + (5) + (5) + (3)
 					if RECOVERY_ROLL < SAVING_THROW: 

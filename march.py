@@ -137,7 +137,7 @@ for k in range(0, 5):
 						if AGE_PTS >= xp: DM = (index+1)
 				
 				# Resolve Malady
-				if MALADY:
+				if DM < DM_MAX and MALADY:
 					# Roll for malady type
 					# MAL_ROLL = 2d10 + Age Modifier + Death March
 					MAL_ROLL = random.randint(1,10) + random.randint(1,10) + AGE_MOD + DM
@@ -170,7 +170,7 @@ for k in range(0, 5):
 					# Roll for recovery (if not outright killed by 13/20)
 					# Recovery Roll = 2d10 + Herbalism + Surgery + Constitution	
 					RECOVERY_ROLL = random.randint(1,10) + random.randint(1,10) + (5) + (5) + (3)
-					if DM < 13 and RECOVERY_ROLL < SAVING_THROW: 
+					if RECOVERY_ROLL < SAVING_THROW: 
 						DM = 20
 						MALADY_DEATH += 1
 					

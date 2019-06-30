@@ -72,8 +72,6 @@ for k in range(0, 5):
 				MALADY = False
 				# Age the character
 				AGE += 1
-				# +1 year Apparent Aging
-				# AGE_APPARENT += 1
 
 				# Check Age Modifier
 				if   AGE >= VEN:	AGE_MOD = AGE_TABLE[3]
@@ -85,7 +83,7 @@ for k in range(0, 5):
 				ROLL = random.randint(1,12) + AGE_MOD + LIFE_MOD
 
 				if ROLL >= 4:
-					# Age on all rolls greater than 4
+					# +1 Apparent Age on all rolls greater than 4
 					AGE_APPARENT += 1
 
 				if 10 <= ROLL <= 12:

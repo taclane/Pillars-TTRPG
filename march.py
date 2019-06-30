@@ -1,12 +1,14 @@
 import random
 import statistics
 
-# Death March points to kill a character
+# Death March ranks to kill a character
+# Alpha rules
 #DM_MAX = 13
+# Twitter post
 DM_MAX = 10
 
-# Lookup table for Age Points/Death March Levels
-XP_TABLE = [1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66, 78, 91, 105, 120]
+# Lookup table for Age Points/Death March ranks
+XP_TABLE = [0, 1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66, 78, 91, 105, 120]
 
 # Lifestyle descriptions and modifiers for [Impoverished, Poor, Comfortable, Prosperous, Rich, Extravagent]
 LIFESTYLE_DESC  = ["Impoverished", "Poor", "Comfortable", "Prosperous", "Rich", "Extravagent"]
@@ -14,8 +16,6 @@ LIFESTYLE_DESC  = ["Impoverished", "Poor", "Comfortable", "Prosperous", "Rich", 
 LIFESTYLE_TABLE = [3, 1, 0, -1, -3, -5]
 #Alpha rules
 #LIFESTYLE_TABLE = [2, 1, 0, -1, -2, -3]
-#test?
-#LIFESTYLE_TABLE = [4, 2, 1, 0, -1, -3]
 
 # Kith descriptions and age tables for [Adult, Middle Aged, Old, Venerable]
 KITH_DESC = ["Anuma", "Dwarf", "Elf" , "Folk" , "Orlan"]
@@ -73,7 +73,7 @@ for k in range(0, 5):
 				# Age the character
 				AGE += 1
 				# +1 year Apparent Aging
-				AGE_APPARENT += 1
+				# AGE_APPARENT += 1
 
 				# Check Age Modifier
 				if   AGE >= VEN:	AGE_MOD = AGE_TABLE[3]
@@ -84,23 +84,23 @@ for k in range(0, 5):
 				# ROLL = 1d12 + Age Modifier + Lifestyle modifier
 				ROLL = random.randint(1,12) + AGE_MOD + LIFE_MOD
 
-				if ROLL <= 3:
-					# No apparent aging
-					AGE_APPARENT -= 1
+				if ROLL >= 4:
+					# Age on all rolls greater than 4
+					AGE_APPARENT += 1
 
-				elif 10 <= ROLL <= 12:
+				if 10 <= ROLL <= 12:
 					# 1 Aging Point in any Attribute
 					AGE_PTS += 1
 
 				elif ROLL == 13:
 					# Advance Death March
-					# +2 years additional Apparent Aging
+					# +2 years additional Apparent Aging (3 total)
 					# Set Aging Points per XP table
 					# Assign a malady
 					#DM += 2
 					DM += 1
 					AGE_APPARENT += 2
-					AGE_PTS = XP_TABLE[DM - 1]
+					AGE_PTS = XP_TABLE[DM]
 					MALADY = True
 
 				elif 14 <= ROLL <= 19:
@@ -109,32 +109,32 @@ for k in range(0, 5):
 
 				elif ROLL == 20:
 					# Advance Death March
-					# +2 years additional Apparent Aging
+					# +2 years additional Apparent Aging (3 total)
 					# Set Aging Points per XP table
 					# Assign a malady
 					#DM += 2
 					DM += 1
 					AGE_APPARENT += 2
-					AGE_PTS = XP_TABLE[DM - 1]
+					AGE_PTS = XP_TABLE[DM]
 					MALADY = True
 
 				elif 21 <= ROLL <= 22:
-					# 2 Aging Points in a three Attributes (6 total)
-					# +1 year additional Apparent Aging
+					# 2 Aging Points in three Attributes (6 total)
+					# +1 year additional Apparent Aging (2 total)
 					AGE_PTS += 6
 					AGE_APPARENT += 1
 
 				elif ROLL >= 23:
-					# 2 Aging Points in a six Attributes (12 total)
-					# +1 year additional Apparent Aging
+					# 2 Aging Points in six Attributes (12 total)
+					# +1 year additional Apparent Aging (2 total)
 					AGE_PTS += 12
 					AGE_APPARENT += 1
 
 				# Check if Age Points were incremented this year
 				if AGE_PTS > POINTCHECK:
 					# Lookup current Death March in XP Table
-					for index,xp in enumerate(XP_TABLE):
-						if AGE_PTS >= xp: DM = (index+1)
+					for ranks,xp in enumerate(XP_TABLE):
+						if AGE_PTS >= xp: DM = (ranks)
 
 				# Resolve Malady (if not outright killed by 13/20)
 				if DM < DM_MAX and MALADY:
